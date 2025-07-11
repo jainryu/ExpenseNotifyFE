@@ -1,0 +1,52 @@
+.item-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem; // Tailwind's text-sm
+}
+
+.item-header {
+  @extend .item-row;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.accordion-wrapper {
+  width: 100%;
+  margin: 0; // align flush left
+}
+
+.accordion-toggle {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: left;
+  border: none;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+
+  &.open {
+    background-color: #ccc;
+    border-radius: 8px 8px 0 0;
+  }
+}
+
+.accordion-panel {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 1rem;
+}
+
+.empty {
+  color: #888;
+  font-size: 0.875rem;
+}
