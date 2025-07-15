@@ -1,10 +1,13 @@
 import ItemListAccordion from "./ItemListAccordion";
-import { Item } from "./Item";
+import { ItemProps } from "./Item";
 import './Item.scss';
 import ItemHeader from "./ItemHeader";
+import { useState } from "react";
+import SaveButton from "../Button/SaveButton";
+import CreateButton from "../Button/CreateButton";
 
 
-const items = [
+const initialItems: ItemProps[] = [
     {
         date: new Date('2023-10-01'),
         title: 'Lunch with Friends',
@@ -28,22 +31,28 @@ const items = [
     }
 ];
 
-const completedItems = [
-        {
-        date: new Date('2023-10-03'),
-        title: 'Movie Night',
-        description: 'Tickets for the latest blockbuster movie.',
-        amount: 30.00,
-        splitStatus: true
-    }
-]
-
 const ItemList = () => {
+  const [items, setItems] = useState<ItemProps[]>(initialItems);
+
+  const handleSplitChange = (index: number, checked: boolean) => {
+    const newItems = [...items];
+    newItems[index].splitStatus = checked;
+    setItems(newItems);
+  };
+
+  const pendingItems = items.filter(item => !item.splitStatus);
+  const completedItems = items.filter(item => item.splitStatus);
+  
   return (
     <div className="p-4 max-w-2xl mx-auto min-h-[300px]">
+        <div className="button-group">
+          <CreateButton />
+          <SaveButton />
+        </div>
+
         <ItemHeader/>
-        <ItemListAccordion title="Pending Expenses" defaultTitle="No Pending Expenses" defaultOpen={true} expenses={items}/>
-        <ItemListAccordion title="Completed Expenses" defaultTitle="No Completed Expenses" expenses={completedItems}/>
+        <ItemListAccordion title="Pending Expenses" defaultTitle="No Pending Expenses" defaultOpen={true} onSplitChange={handleSplitChange} fullList={items} expenses={pendingItems}/>
+        <ItemListAccordion title="Completed Expenses" defaultTitle="No Completed Expenses" onSplitChange={handleSplitChange} fullList={items} expenses={completedItems}/>
     </div>
   );
 }
