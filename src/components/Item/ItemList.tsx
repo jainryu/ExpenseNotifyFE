@@ -5,6 +5,7 @@ import ItemHeader from "./ItemHeader";
 import { useState } from "react";
 import SaveButton from "../Button/SaveButton";
 import CreateButton from "../Button/CreateButton";
+import ExpenseModal from "../ExpenseModal/ExpenseModal";
 
 
 const initialItems: ItemProps[] = [
@@ -33,6 +34,11 @@ const initialItems: ItemProps[] = [
 
 const ItemList = () => {
   const [items, setItems] = useState<ItemProps[]>(initialItems);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCreate = (item: ItemProps) => {
+    setItems(prev => [...prev, item]);
+  };
 
   const handleSplitChange = (index: number, checked: boolean) => {
     const newItems = [...items];
@@ -46,7 +52,8 @@ const ItemList = () => {
   return (
     <div className="p-4 max-w-2xl mx-auto min-h-[300px]">
         <div className="button-group">
-          <CreateButton />
+          <CreateButton onClick={() => setShowModal(true)}/>
+          {showModal && <ExpenseModal onClose={() => setShowModal(false)} onCreate={handleCreate} />}
           <SaveButton />
         </div>
 

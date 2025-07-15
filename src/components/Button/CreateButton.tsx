@@ -1,8 +1,12 @@
 import './Button.scss'
 
-const CreateButton = () => {
+type CreateButtonProps = {
+  onClick: () => void;
+  
+}
+const CreateButton = ({onClick}: CreateButtonProps) => {
   return (
-    <button className="create-button">
+    <button className="create-button" onClick={onClick}>
       Add New Expense
     </button>
   );
