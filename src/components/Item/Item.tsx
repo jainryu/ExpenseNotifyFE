@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './Item.scss';
 
 export type ItemProps = {
@@ -9,7 +10,8 @@ export type ItemProps = {
 }
 
 export const Item = (props: ItemProps) => {
-  const { date, title, description, amount, splitStatus } = props;
+  const [split, setSplit] = useState(props.splitStatus);
+  const { date, title, description, amount } = props;
 
   return (
     <div className="item-row">
@@ -18,7 +20,7 @@ export const Item = (props: ItemProps) => {
       <div>{description}</div>
       <div>${amount.toFixed(2)}</div>
       <div>
-         <input type="checkbox" checked={splitStatus}/>
+         <input type="checkbox" checked={split}  onChange={(e) => setSplit(e.target.checked)}/>
       </div>
     </div>
   );

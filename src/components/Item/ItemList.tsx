@@ -1,6 +1,7 @@
-import CompletedItemList from "./CompletedItemList";
+import ItemListAccordion from "./ItemListAccordion";
 import { Item } from "./Item";
 import './Item.scss';
+import ItemHeader from "./ItemHeader";
 
 
 const items = [
@@ -39,22 +40,10 @@ const completedItems = [
 
 const ItemList = () => {
   return (
-    <div>
-            <div className="p-4 max-w-2xl mx-auto">
-        <h2 className="font-semibold mb-3">Pending Expenses</h2>
-      <div className="item-header">
-        <div>Date</div>
-        <div>Title</div>
-        <div>Description</div>
-        <div>Amount</div>
-        <div>Split?</div>
-      </div>
-
-      {items.map((item, i) => (
-        <Item key={i} {...item} />
-      ))}
-    </div>
-        <CompletedItemList expenses={completedItems}/>
+    <div className="p-4 max-w-2xl mx-auto min-h-[300px]">
+        <ItemHeader/>
+        <ItemListAccordion title="Pending Expenses" defaultTitle="No Pending Expenses" defaultOpen={true} expenses={items}/>
+        <ItemListAccordion title="Completed Expenses" defaultTitle="No Completed Expenses" expenses={completedItems}/>
     </div>
   );
 }
