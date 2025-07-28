@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import './ExpenseModal.scss';
+import { ItemProps } from '../Item/Item';
 
 type Props = {
   onClose: () => void;
-  onCreate: (newItem: {
-    date: Date;
-    title: string;
-    description: string;
-    amount: number;
-    splitStatus: boolean;
-  }) => void;
+  onCreate: (newItem: ItemProps) => void;
 };
 
 const ExpenseModal = ({ onClose, onCreate }: Props) => {
@@ -17,16 +12,18 @@ const ExpenseModal = ({ onClose, onCreate }: Props) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
-  const [splitStatus, setSplitStatus] = useState(false);
+  const [status, setSplitStatus] = useState(false);
 
   const handleSubmit = () => {
     if (!title || !amount || !date) return;
     onCreate({
+      user_id: 'jainryu',
+      transaction_id: Math.random().toString(36).substring(2, 15),
       title,
       description,
-      amount: parseFloat(amount),
-      date: new Date(date),
-      splitStatus,
+      amount: parseFloat(amount).toString(),
+      date: new Date(date).toISOString(),
+      status,
     });
     onClose();
   };
@@ -40,12 +37,12 @@ const ExpenseModal = ({ onClose, onCreate }: Props) => {
         <input type="date" value={date} onChange={e => setDate(e.target.value)} />
         <input type="number" placeholder="Amount" value={amount} onChange={e => setAmount(e.target.value)} />
         <label>
-          <input type="checkbox" checked={splitStatus} onChange={e => setSplitStatus(e.target.checked)} />
+          <input type="checkbox" checked={status} onChange={e => setSplitStatus(e.target.checked)} />
           Mark as Split (Completed)
         </label>
         <div className="actions">
           <button className="save-button" onClick={onClose}>Cancel</button>
-            <button className="blue-button" onClick={handleSubmit}>Save</button>
+          <button className="blue-button" onClick={handleSubmit}>Save</button>
         </div>
       </div>
     </div>

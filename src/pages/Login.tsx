@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,6 +24,8 @@ const Login = () => {
       const token = response.data.access_token;
       localStorage.setItem('token', token);
       alert('Login successful!');
+
+      navigate('/')
 
     } catch (error) {
       alert('Invalid credentials');

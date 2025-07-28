@@ -1,57 +1,26 @@
 import ItemListAccordion from "./ItemListAccordion";
-import { ItemProps } from "./Item";
+import { Item, ItemProps } from "./Item";
 import './Item.scss';
 import ItemHeader from "./ItemHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SaveButton from "../Button/SaveButton";
 import CreateButton from "../Button/CreateButton";
 import ExpenseModal from "../ExpenseModal/ExpenseModal";
-import axios from "axios";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 
-const initialItems: ItemProps[] = [
-  {
-    date: new Date('2023-10-01'),
-    title: 'Lunch with Friends',
-    description: 'Lunch at the new Italian restaurant downtown.',
-    amount: 45.00,
-    splitStatus: true
-  },
-  {
-    date: new Date('2023-10-02'),
-    title: 'Grocery Shopping',
-    description: 'Weekly grocery shopping at the local market.',
-    amount: 120.50,
-    splitStatus: false
-  },
-  {
-    date: new Date('2023-10-03'),
-    title: 'Movie Night',
-    description: 'Tickets for the latest blockbuster movie.',
-    amount: 30.00,
-    splitStatus: true
-  }
-];
-
-const fetchItems = async () => {
-  const { data } = await axios.get('/api/items');
-  return data;
+type Props = {
+  initialItems: ItemProps[];
 }
 
+const ItemList = ({ initialItems }: Props) => {
 
-const ItemList = () => {
-  const queryClient = useQueryClient()
+  const [items, setItems] = useState<ItemProps[]>([]);
 
-  // const { data, isLoading, error } = useQuery({
-  //   queryKey: ['items'],
-  //   queryFn: fetchItems,
-  // })
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
+  console.log("Initial Items:", initialItems);
 
-  // if (isLoading) return <p>Loading...</p>;
-  // if (error) return <p>Error loading</p>;
-
-  const [items, setItems] = useState<ItemProps[]>(initialItems);
   const [showModal, setShowModal] = useState(false);
 
   const handleCreate = (item: ItemProps) => {
@@ -60,12 +29,12 @@ const ItemList = () => {
 
   const handleSplitChange = (index: number, checked: boolean) => {
     const newItems = [...items];
-    newItems[index].splitStatus = checked;
+    newItems[index].status = checked;
     setItems(newItems);
   };
 
-  const pendingItems = items.filter(item => !item.splitStatus);
-  const completedItems = items.filter(item => item.splitStatus);
+  const pendingItems = items.filter(item => !item.status);
+  const completedItems = items.filter(item => item.status);
 
   return (
     <div className="p-4 max-w-2xl mx-auto min-h-[300px]">

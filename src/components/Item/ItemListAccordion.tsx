@@ -16,34 +16,34 @@ const ItemListAccordion = (props: AccordionProps) => {
 
     return (
         <div className="accordion-wrapper">
-        <button className={`accordion-toggle ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? '▼' : '▶'} {props.title}
-        </button>
+            <button className={`accordion-toggle ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(!isOpen)}>
+                {isOpen ? '▼' : '▶'} {props.title}
+            </button>
 
-        <div className={`accordion-panel ${isOpen ? 'open' : 'closed'}`}>
-        {expenses.length === 0 ? (
-            <p className="empty">{props.defaultTitle}</p>
-        ) : (
-            <>
-            {expenses.map((exp, i) => {
-            const fullIndex = props.fullList.findIndex(item =>
-                item.title === exp.title &&
-                item.description === exp.description &&
-                item.amount === exp.amount &&
-                item.date.getTime() === exp.date.getTime()
-            );
+            <div className={`accordion-panel ${isOpen ? 'open' : 'closed'}`}>
+                {expenses.length === 0 ? (
+                    <p className="empty">{props.defaultTitle}</p>
+                ) : (
+                    <>
+                        {expenses.map((exp, i) => {
+                            const fullIndex = props.fullList.findIndex(item =>
+                                item.title === exp.title &&
+                                item.description === exp.description &&
+                                item.amount === exp.amount &&
+                                item.date === exp.date
+                            );
 
-            return (
-                <Item
-                key={i}
-                {...exp}
-                onSplitChange={(checked) => props.onSplitChange(fullIndex, checked)}
-                />
-            );
-            })}
-            </>
-        )}
-        </div>
+                            return (
+                                <Item
+                                    key={i}
+                                    {...exp}
+                                    onSplitChange={(checked) => props.onSplitChange(fullIndex, checked)}
+                                />
+                            );
+                        })}
+                    </>
+                )}
+            </div>
         </div>
     );
 
