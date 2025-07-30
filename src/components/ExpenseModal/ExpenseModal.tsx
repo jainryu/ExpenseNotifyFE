@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './ExpenseModal.scss';
 import { ItemProps } from '../Item/Item';
+import axios from 'axios';
 
 type Props = {
   onClose: () => void;
@@ -14,19 +15,29 @@ const ExpenseModal = ({ onClose, onCreate }: Props) => {
   const [date, setDate] = useState('');
   const [status, setSplitStatus] = useState(false);
 
-  const handleSubmit = () => {
-    if (!title || !amount || !date) return;
-    onCreate({
-      user_id: 'jainryu',
-      transaction_id: Math.random().toString(36).substring(2, 15),
-      title,
-      description,
-      amount: parseFloat(amount).toString(),
-      date: new Date(date).toISOString(),
-      status,
-    });
-    onClose();
-  };
+  const handleSave = async () => {
+
+    try {
+      const token = localStorage.getItem('token');
+      const item: ItemProps = {
+        title,
+        date,
+        amount,
+        description,
+        status,
+      };
+      const res = await axios.post('http://localhost:8000/transactions/create', item, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      onCreate(res.data);
+      onClose();
+    } catch (error) {
+      alert('Failed to save items. Please try again.');
+      console.error('Error saving items:', error);
+    }
+  }
 
   return (
     <div className="modal-overlay">
@@ -42,7 +53,7 @@ const ExpenseModal = ({ onClose, onCreate }: Props) => {
         </label>
         <div className="actions">
           <button className="save-button" onClick={onClose}>Cancel</button>
-          <button className="blue-button" onClick={handleSubmit}>Save</button>
+          <button className="blue-button" onClick={handleSave}>Save</button>
         </div>
       </div>
     </div>

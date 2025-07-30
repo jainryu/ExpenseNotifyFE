@@ -28,10 +28,7 @@ const ItemListAccordion = (props: AccordionProps) => {
                     <>
                         {expenses.map((exp, i) => {
                             const fullIndex = props.fullList.findIndex(item =>
-                                item.title === exp.title &&
-                                item.description === exp.description &&
-                                item.amount === exp.amount &&
-                                item.date === exp.date
+                                item.transaction_id === exp.transaction_id
                             );
 
                             return (

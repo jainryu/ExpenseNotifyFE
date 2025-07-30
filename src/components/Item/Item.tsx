@@ -4,8 +4,8 @@ import { Trash2 } from 'lucide-react';
 import axios from 'axios';
 
 export type ItemProps = {
-  user_id: string;
-  transaction_id: string;
+  user_id?: string;
+  transaction_id?: string;
   title: string;
   date: string;
   amount: string;
@@ -36,7 +36,7 @@ export const Item = (props: ItemComponentProps) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      props.onDelete(props.transaction_id);
+      props.onDelete(props.transaction_id!!);
       return res.data;
     }
     catch (error) {
@@ -45,6 +45,29 @@ export const Item = (props: ItemComponentProps) => {
     }
   }
 
+  const handleSplitChange = async (checked: boolean) => {
+    if (!props.transaction_id) return;
+
+    try {
+      const token = localStorage.getItem('token');
+
+      await axios.put(
+        `http://localhost:8000/transactions/${props.transaction_id}`,
+        { status: checked },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      onSplitChange?.(checked);
+    } catch (error) {
+      alert('Failed to update split status. Please try again.');
+      console.error('Error updating split status:', error);
+    }
+  };
+
   return (
     <div className="item-row">
       <div>{date}</div>
@@ -52,14 +75,14 @@ export const Item = (props: ItemComponentProps) => {
       <div>{description}</div>
       <div>{formatAmount(amount)}</div>
       <div>
-        <input type="checkbox" checked={props.status} onChange={(e) => onSplitChange?.(e.target.checked)}
+        <input type="checkbox" checked={props.status} onChange={(e) => handleSplitChange(e.target.checked)}
         />
       </div>
       <div>
         <Trash2
           className="trash-icon"
           size={18}
-          onClick={handleDelete} // You define this
+          onClick={handleDelete}
         />
       </div>
     </div>
