@@ -8,6 +8,7 @@ type AccordionProps = {
     expenses: ItemProps[];
     onSplitChange: (index: number, checked: boolean) => void;
     fullList: ItemProps[];
+    onDelete: (id: string) => void;
 }
 
 const ItemListAccordion = (props: AccordionProps) => {
@@ -38,6 +39,7 @@ const ItemListAccordion = (props: AccordionProps) => {
                                     key={i}
                                     {...exp}
                                     onSplitChange={(checked) => props.onSplitChange(fullIndex, checked)}
+                                    onDelete={props.onDelete}
                                 />
                             );
                         })}
