@@ -4,9 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const fetchItems = async () => {
   const token = localStorage.getItem('token');
-  const res = await axios.get('http://localhost:8000/transactions/me', {
+  const res = await axios.get(`${API_URL}/transactions/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -41,7 +43,7 @@ const Home = () => {
     const fetchFromGmail = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await axios.get("http://localhost:8000/genai/extract", {
+        const res = await axios.get(`${API_URL}/genai/extract`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

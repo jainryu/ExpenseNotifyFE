@@ -3,6 +3,8 @@ import './Item.scss';
 import { Pencil, Trash2 } from 'lucide-react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export type ItemProps = {
   user_id?: string;
   transaction_id?: string;
@@ -32,7 +34,7 @@ export const Item = (props: ItemComponentProps) => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.delete(`http://localhost:8000/transactions/${props.transaction_id}`, {
+      const res = await axios.delete(`${API_URL}/transactions/${props.transaction_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,7 +55,7 @@ export const Item = (props: ItemComponentProps) => {
       const token = localStorage.getItem('token');
 
       await axios.put(
-        `http://localhost:8000/transactions/${props.transaction_id}`,
+        `${API_URL}/transactions/${props.transaction_id}`,
         { status: checked },
         {
           headers: {

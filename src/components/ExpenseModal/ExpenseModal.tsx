@@ -5,6 +5,8 @@ import axios from 'axios';
 import { handleAuthError } from '../../utils/handleAuthError';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 type Props = {
   onClose: () => void;
   onCreate?: (newItem: ItemProps) => void;
@@ -45,9 +47,8 @@ const ExpenseModal = ({ onClose, onCreate, onUpdate, itemToEdit }: Props) => {
         status,
       };
 
-      const url = itemToEdit
-        ? `http://localhost:8000/transactions/${itemToEdit.transaction_id}`
-        : 'http://localhost:8000/transactions/create';
+      const path = itemToEdit ? `/transactions/${itemToEdit.transaction_id}` : '/transactions/create';
+      const url = `${API_URL}${path}`;
 
       const method = itemToEdit ? 'put' : 'post';
 
