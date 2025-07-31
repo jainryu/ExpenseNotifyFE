@@ -16,6 +16,8 @@ type Props = {
 const ItemList = ({ initialItems }: Props) => {
 
   const [items, setItems] = useState<ItemProps[]>([]);
+  const [editingItem, setEditingItem] = useState<ItemProps | null>(null);
+
 
   useEffect(() => {
     setItems(initialItems);
@@ -28,6 +30,14 @@ const ItemList = ({ initialItems }: Props) => {
     setItems(prev => [...prev, item]);
   };
 
+  const handleUpdate = (updatedItem: ItemProps) => {
+    setItems(prev =>
+      prev.map(item =>
+        item.transaction_id === updatedItem.transaction_id ? updatedItem : item
+      )
+    );
+  };
+
   const handleSplitChange = (index: number, checked: boolean) => {
     const changed_items = [...items];
     changed_items[index].status = checked;
@@ -38,6 +48,10 @@ const ItemList = ({ initialItems }: Props) => {
     setItems(prev => prev.filter(item => item.transaction_id !== id));
   };
 
+  const handleEditClick = (item: ItemProps) => {
+    setEditingItem(item);
+  };
+
   const pendingItems = items.filter(item => !item.status);
   const completedItems = items.filter(item => item.status);
 
@@ -46,11 +60,20 @@ const ItemList = ({ initialItems }: Props) => {
       <div className="button-group">
         <CreateButton onClick={() => setShowModal(true)} />
         {showModal && <ExpenseModal onClose={() => setShowModal(false)} onCreate={handleCreate} />}
+
+        {/* Edit Modal */}
+        {editingItem && (
+          <ExpenseModal
+            itemToEdit={editingItem}
+            onClose={() => setEditingItem(null)}
+            onUpdate={handleUpdate}
+          />
+        )}
       </div>
 
       <ItemHeader />
-      <ItemListAccordion title="Pending Expenses" defaultTitle="No Pending Expenses" defaultOpen={true} onSplitChange={handleSplitChange} fullList={items} expenses={pendingItems} onDelete={handleDelete} />
-      <ItemListAccordion title="Completed Expenses" defaultTitle="No Completed Expenses" onSplitChange={handleSplitChange} fullList={items} expenses={completedItems} onDelete={handleDelete} />
+      <ItemListAccordion title="Pending Expenses" defaultTitle="No Pending Expenses" defaultOpen={true} onSplitChange={handleSplitChange} fullList={items} expenses={pendingItems} onDelete={handleDelete} onEditClick={handleEditClick} />
+      <ItemListAccordion title="Completed Expenses" defaultTitle="No Completed Expenses" onSplitChange={handleSplitChange} fullList={items} expenses={completedItems} onDelete={handleDelete} onEditClick={handleEditClick} />
     </div>
   );
 }

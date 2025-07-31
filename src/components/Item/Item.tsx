@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Item.scss';
-import { Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import axios from 'axios';
 
 export type ItemProps = {
@@ -16,6 +16,7 @@ export type ItemProps = {
 export type ItemComponentProps = ItemProps & {
   onSplitChange?: (checked: boolean) => void;
   onDelete: (id: string) => void;
+  onEditClick: (item: ItemProps) => void;
 }
 
 const formatAmount = (amount: string) => {
@@ -26,7 +27,7 @@ const formatAmount = (amount: string) => {
 }
 
 export const Item = (props: ItemComponentProps) => {
-  const { date, title, description, amount, onSplitChange } = props;
+  const { date, title, description, amount, onSplitChange, onEditClick } = props;
 
   const handleDelete = async () => {
     try {
@@ -78,12 +79,13 @@ export const Item = (props: ItemComponentProps) => {
         <input type="checkbox" checked={props.status} onChange={(e) => handleSplitChange(e.target.checked)}
         />
       </div>
-      <div>
+      <div className='icon-group'>
         <Trash2
           className="trash-icon"
           size={18}
           onClick={handleDelete}
         />
+        <Pencil className="pencil-icon" size={18} onClick={() => onEditClick(props)} />
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ const fetchItems = async () => {
 const Home = () => {
   const navigate = useNavigate();
 
-  const { data: items, isLoading, isError, error } = useQuery({
+  const { data: items, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['items'],
     queryFn: fetchItems,
     retry: false
@@ -36,6 +36,34 @@ const Home = () => {
       }
     }
   }, [isError, error, navigate]);
+
+  useEffect(() => {
+    const fetchFromGmail = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const res = await axios.get("http://localhost:8000/genai/extract", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          // New transactions were added → refetch transaction list
+          alert("New transactions found! Refetching items...");
+          refetch();
+        } else {
+          // No new transactions found, no need to refetch
+          alert("No new transactions found.");
+        }
+
+        // If it's a message or no new ones, no need to refetch
+      } catch (error) {
+        console.error("Error syncing with Gmail:", error);
+      }
+    };
+
+    fetchFromGmail();
+  }, [refetch]);
 
 
   if (isLoading) return <p>Loading...</p>;

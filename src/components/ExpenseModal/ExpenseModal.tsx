@@ -2,18 +2,36 @@ import { useState } from 'react';
 import './ExpenseModal.scss';
 import { ItemProps } from '../Item/Item';
 import axios from 'axios';
+import { handleAuthError } from '../../utils/handleAuthError';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   onClose: () => void;
-  onCreate: (newItem: ItemProps) => void;
+  onCreate?: (newItem: ItemProps) => void;
+  onUpdate?: (updatedItem: ItemProps) => void; // Optional for future updates
+  itemToEdit?: ItemProps; // Optional for editing existing items
 };
 
-const ExpenseModal = ({ onClose, onCreate }: Props) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [date, setDate] = useState('');
-  const [status, setSplitStatus] = useState(false);
+const formatDate = (isoDate: string) => {
+  if (!isoDate) return '';
+  const [year, month, day] = isoDate.split("-");
+  return `${month}/${day}/${year}`;
+};
+
+const toIsoDate = (mdy: string) => {
+  const [month, day, year] = mdy.split('/');
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+};
+
+const ExpenseModal = ({ onClose, onCreate, onUpdate, itemToEdit }: Props) => {
+  const navigate = useNavigate();
+
+
+  const [title, setTitle] = useState(itemToEdit?.title || '');
+  const [description, setDescription] = useState(itemToEdit?.description || '');
+  const [amount, setAmount] = useState(itemToEdit?.amount ? Number(itemToEdit?.amount.substring(1)) : '');
+  const [date, setDate] = useState(itemToEdit?.date ? toIsoDate(itemToEdit?.date) : '');
+  const [status, setSplitStatus] = useState(itemToEdit?.status || false);
 
   const handleSave = async () => {
 
@@ -21,19 +39,35 @@ const ExpenseModal = ({ onClose, onCreate }: Props) => {
       const token = localStorage.getItem('token');
       const item: ItemProps = {
         title,
-        date,
-        amount,
+        date: formatDate(date),
+        amount: `$${amount}`,
         description,
         status,
       };
-      const res = await axios.post('http://localhost:8000/transactions/create', item, {
+
+      const url = itemToEdit
+        ? `http://localhost:8000/transactions/${itemToEdit.transaction_id}`
+        : 'http://localhost:8000/transactions/create';
+
+      const method = itemToEdit ? 'put' : 'post';
+
+      const res = await axios[method](url, item, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      onCreate(res.data);
+
+      if (itemToEdit && onUpdate) {
+        onUpdate(res.data);
+      } else if (onCreate) {
+        onCreate(res.data);
+      }
       onClose();
     } catch (error) {
+      const isAuthError = handleAuthError(error, navigate);
+      if (isAuthError) {
+        return;
+      }
       alert('Failed to save items. Please try again.');
       console.error('Error saving items:', error);
     }

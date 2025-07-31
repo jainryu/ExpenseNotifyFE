@@ -8,6 +8,13 @@
   font-size: 0.875rem; // Tailwind's text-sm
 }
 
+.icon-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
 .item-header {
   @extend .item-row;
   font-weight: 600;
@@ -68,5 +75,14 @@
 
   &:hover {
     color: #b91c1c; // Tailwind's red-700
+  }
+}
+
+.pencil-icon {
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #3add42; // Tailwind's red-700
   }
 }
