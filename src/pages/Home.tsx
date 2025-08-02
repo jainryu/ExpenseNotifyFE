@@ -39,42 +39,13 @@ const Home = () => {
     }
   }, [isError, error, navigate]);
 
-  useEffect(() => {
-    const fetchFromGmail = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const res = await axios.get(`${API_URL}/genai/extract`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          // New transactions were added → refetch transaction list
-          alert("New transactions found! Refetching items...");
-          refetch();
-        } else {
-          // No new transactions found, no need to refetch
-          alert("No new transactions found.");
-        }
-
-        // If it's a message or no new ones, no need to refetch
-      } catch (error) {
-        console.error("Error syncing with Gmail:", error);
-      }
-    };
-
-    fetchFromGmail();
-  }, [refetch]);
-
-
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error fetching items</p>;
 
   console.log('Fetched items:', items);
   return (
     <>
-      <h1>Welcome to Expense Notify</h1>
+      <h1>Expense Notify</h1>
       <ItemList initialItems={items} />
     </>
   );

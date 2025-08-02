@@ -9,7 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 type Props = {
   onClose: () => void;
-  onCreate?: (newItem: ItemProps) => void;
+  onCreate?: (newItem: ItemProps[]) => void;
   onUpdate?: (updatedItem: ItemProps) => void; // Optional for future updates
   itemToEdit?: ItemProps; // Optional for editing existing items
 };
@@ -61,7 +61,7 @@ const ExpenseModal = ({ onClose, onCreate, onUpdate, itemToEdit }: Props) => {
       if (itemToEdit && onUpdate) {
         onUpdate(res.data);
       } else if (onCreate) {
-        onCreate(res.data);
+        onCreate([res.data]);
       }
       onClose();
     } catch (error) {

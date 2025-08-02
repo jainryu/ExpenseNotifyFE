@@ -7,6 +7,8 @@ import SaveButton from "../Button/SaveButton";
 import CreateButton from "../Button/CreateButton";
 import ExpenseModal from "../ExpenseModal/ExpenseModal";
 import axios from "axios";
+import FetchButton from "../Button/FetchButton";
+import ButtonGroup from "../Button/ButtonGroup";
 
 
 type Props = {
@@ -24,10 +26,8 @@ const ItemList = ({ initialItems }: Props) => {
   }, [initialItems]);
   console.log("Initial Items:", initialItems);
 
-  const [showModal, setShowModal] = useState(false);
-
-  const handleCreate = (item: ItemProps) => {
-    setItems(prev => [...prev, item]);
+  const handleCreate = (newItems: ItemProps[]) => {
+    setItems(prev => [...prev, ...newItems]);
   };
 
   const handleUpdate = (updatedItem: ItemProps) => {
@@ -57,19 +57,16 @@ const ItemList = ({ initialItems }: Props) => {
 
   return (
     <div className="p-4 max-w-2xl mx-auto min-h-[300px]">
-      <div className="button-group">
-        <CreateButton onClick={() => setShowModal(true)} />
-        {showModal && <ExpenseModal onClose={() => setShowModal(false)} onCreate={handleCreate} />}
+      <ButtonGroup onCreate={handleCreate} onUpdate={handleUpdate} />
 
-        {/* Edit Modal */}
-        {editingItem && (
-          <ExpenseModal
-            itemToEdit={editingItem}
-            onClose={() => setEditingItem(null)}
-            onUpdate={handleUpdate}
-          />
-        )}
-      </div>
+      {/* Edit Modal */}
+      {editingItem && (
+        <ExpenseModal
+          itemToEdit={editingItem}
+          onClose={() => setEditingItem(null)}
+          onUpdate={handleUpdate}
+        />
+      )}
 
       <ItemHeader />
       <ItemListAccordion title="Pending Expenses" defaultTitle="No Pending Expenses" defaultOpen={true} onSplitChange={handleSplitChange} fullList={items} expenses={pendingItems} onDelete={handleDelete} onEditClick={handleEditClick} />
