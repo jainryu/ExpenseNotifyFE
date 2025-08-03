@@ -17,7 +17,12 @@ const fetchItems = async () => {
   return res.data;
 };
 
-const Home = () => {
+type HomeProps = {
+  isLinked: boolean;
+  setIsLinked: (v: boolean) => void;
+}
+
+const Home = ({ isLinked, setIsLinked }: HomeProps) => {
   const navigate = useNavigate();
 
   const { data: items, isLoading, isError, error, refetch } = useQuery({
@@ -46,7 +51,7 @@ const Home = () => {
   return (
     <>
       <h1>Expense Notify</h1>
-      <ItemList initialItems={items} />
+      <ItemList initialItems={items} isLinked={isLinked} setIsLinked={setIsLinked} />
     </>
   );
 }

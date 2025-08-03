@@ -13,9 +13,11 @@ import ButtonGroup from "../Button/ButtonGroup";
 
 type Props = {
   initialItems: ItemProps[];
+  isLinked: boolean;
+  setIsLinked: (v: boolean) => void;
 }
 
-const ItemList = ({ initialItems }: Props) => {
+const ItemList = ({ isLinked, setIsLinked, initialItems }: Props) => {
 
   const [items, setItems] = useState<ItemProps[]>([]);
   const [editingItem, setEditingItem] = useState<ItemProps | null>(null);
@@ -57,7 +59,7 @@ const ItemList = ({ initialItems }: Props) => {
 
   return (
     <div className="p-4 max-w-2xl mx-auto min-h-[300px]">
-      <ButtonGroup onCreate={handleCreate} onUpdate={handleUpdate} />
+      <ButtonGroup onCreate={handleCreate} onUpdate={handleUpdate} isLinked={isLinked} setIsLinked={setIsLinked} />
 
       {/* Edit Modal */}
       {editingItem && (
