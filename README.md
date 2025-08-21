@@ -1,12 +1,24 @@
-# React + Vite
+# 🖥️ Expense Notify Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the **React + TypeScript frontend** for the Expense Notify app.  
+It provides a clean UI for tracking expenses, checking split status, and linking Gmail to automatically import transactions.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- 🔐 Login & signup with JWT authentication
+- 📊 Dashboard for viewing, creating, and deleting expenses
+- 📧 Gmail account linking for automatic expense extraction
+- ✅ Status tracking (whether expenses are split with roommates)
+- ⚡ Built with **React + TypeScript**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack
+
+- [React](https://react.dev/) (with Hooks)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) (for development/build)
+- [Axios](https://axios-http.com/) (API calls)
+- [Tailwind CSS](https://tailwindcss.com/) (styling)
