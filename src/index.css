@@ -23,13 +23,11 @@ a:hover {
   color: #535bf2;
 }
 
-/* Remove from global body */
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
 }
 
-/* Use this in your login/signup page only */
 .centered-page {
   display: grid;
   place-items: center;

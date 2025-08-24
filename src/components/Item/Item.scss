@@ -5,7 +5,7 @@
   align-items: center;
   padding: 0.5rem 0;
   border-bottom: 1px solid #e5e7eb;
-  font-size: 0.875rem; // Tailwind's text-sm
+  font-size: 0.875rem;
 }
 
 .icon-group {
@@ -24,7 +24,7 @@
 
 .accordion-wrapper {
   width: 100%;
-  margin: 0; // align flush left
+  margin: 0;
 }
 
 .accordion-toggle {
@@ -46,7 +46,7 @@
 }
 
 .accordion-panel {
-  max-height: 1000px; // allow for scrolling content
+  max-height: 1000px;
   opacity: 1;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -74,7 +74,7 @@
   transition: color 0.2s ease;
 
   &:hover {
-    color: #b91c1c; // Tailwind's red-700
+    color: #b91c1c;
   }
 }
 
@@ -83,6 +83,6 @@
   transition: color 0.2s ease;
 
   &:hover {
-    color: #3add42; // Tailwind's red-700
+    color: #3add42;
   }
 }
